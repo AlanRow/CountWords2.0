@@ -1,0 +1,5 @@
+﻿  CountWords.cpp
+w:\users\user\documents\visual studio 2015\projects\countwords\countwords\countwords.cpp(95): warning C4244: 'initializing': conversion from '__int64' to 'unsigned int', possible loss of data
+w:\users\user\documents\visual studio 2015\projects\countwords\countwords\countwords.cpp(96): warning C4244: 'argument': conversion from '__int64' to 'DWORD', possible loss of data
+  CountWords.vcxproj -> w:\users\user\documents\visual studio 2015\Projects\CountWords\Debug\CountWords.exe
+  CountWords.vcxproj -> w:\users\user\documents\visual studio 2015\Projects\CountWords\Debug\CountWords.pdb (Full PDB)
