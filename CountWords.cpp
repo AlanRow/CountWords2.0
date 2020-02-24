@@ -7,8 +7,11 @@
 //#include <string>
 #include <list>
 #include <map>
+#include <chrono>
 
 using namespace std;
+
+char* ABET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
 
 class CStringComparator
 {
@@ -113,22 +116,36 @@ int read_file(char** text) {
 void parsewords(char* text) {
 
 	while (*text != '\0') {
-		if (*text == ' ') {
+		char *abet_symb = ABET;
+		bool is_sep = true;
+
+		while (is_sep && *abet_symb != '\0') {
+			if (*text == *abet_symb) {
+				*text = tolower(*text);
+				is_sep = false;
+			}
+			abet_symb++;
+		}
+
+		if (is_sep) {
 			*text = '\0';
 		}
+
 		text++;
 	}
 }
 
 int main(int argc, char* argv[])
 {
-	map<char*, size_t, CStringComparator, CMyAllocator<char*>> Map;
+	//map<char*, size_t, CStringComparator, CMyAllocator<char*>> Map; // time ~ 2.7
+	map<char*, size_t> Map; // time ~ 3.4
 
 	char* text;
 	int length = read_file(&text);
 
+	chrono::time_point<chrono::high_resolution_clock> start = chrono::high_resolution_clock::now();
 	parsewords(text);
-	
+
 	char *p = text;
 
 	while (p - text < length) {
@@ -150,22 +167,15 @@ int main(int argc, char* argv[])
 		while (*p != '\0')
 			p++;
 	}
+	chrono::time_point<chrono::high_resolution_clock> end = chrono::high_resolution_clock::now();
 
 	for (auto Entry : Map)
 	{
 		printf("Word %s, count %I64d\n", Entry.first, (uint64_t)Entry.second);
 	}
 
-
-
-	/*for (int i = 0; i < length; i++)
-		if (text[i] == '\0')
-			cout << "[\\0]";
-		else
-			cout << text[i];*/
-
-
-	//printcounts(&text[0], &text[length - 1]);
+	auto elapsed = chrono::duration_cast<chrono::milliseconds>(end - start);
+	cout << endl << "Elapsed time: " << elapsed.count() << " ms" << endl;
 
 	getchar();
 
